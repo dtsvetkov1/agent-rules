@@ -1,0 +1,253 @@
+---
+description: When the task it directly about components, modules or features using react native
+alwaysApply: false
+---
+
+# React Native Expo Project Guidelines
+
+This is a React Native Expo project. Follow these core principles and best practices:
+
+## Project Structure
+
+- Main entry point is [app/\_layout.tsx](mdc:app/_layout.tsx)
+- Use Expo Router for navigation with file-based routing in the `app/` directory
+- Components are organized in [components/](mdc:components/) directory
+- UI components go in [components/ui/](mdc:components/ui/) subdirectory
+- Constants are stored in [constants/](mdc:constants/) directory
+- Custom hooks are in [hooks/](mdc:hooks/) directory
+
+## Core Technology Stack
+
+- **React Native with Expo**: Use latest Expo SDK features and APIs
+- **TypeScript**: All files should use TypeScript with proper typing
+- **Expo Router**: File-based routing system for navigation
+
+## Package Management
+
+- **ALWAYS use Bun as the default package manager**
+- Use `bun install` instead of `npm install` or `yarn install`
+- Use `bun add <package>` to install new dependencies
+- Use `bun remove <package>` to uninstall packages
+- Use `bun run <script>` to execute package.json scripts
+- Use `bunx <command>` instead of `npx <command>` for one-time executions
+- Example commands:
+  ```bash
+  bun install                    # Install dependencies
+  bun add react-native-reanimated # Add a package
+  bun remove axios              # Remove a package
+  bun run start                 # Run development server
+  bunx expo install             # Use bunx for one-time commands
+  ```
+
+## Animation Guidelines
+
+- **ALWAYS use React Native Reanimated instead of built-in Animated API**
+- Use latest Reanimated options and APIs (worklets, shared values, etc.)
+- Prefer layout animations, then use `useSharedValue`, `useAnimatedStyle`, `withTiming`, `withSpring` from react-native-reanimated for complex animations
+- **CSS Transitions and Animations (Reanimated 4+)**: Use new CSS-like animation syntax for declarative animations
+- request reanimated docs for latest features and APIs if needed
+- Example with useAnimatedStyle:
+
+  ```tsx
+  import {
+    useSharedValue,
+    useAnimatedStyle,
+    withTiming,
+  } from "react-native-reanimated";
+  import Animated from "react-native-reanimated";
+
+  const opacity = useSharedValue(0);
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
+  ```
+
+- Example with CSS transitions and animations (Reanimated 4+):
+
+  ```tsx
+  import Animated from "react-native-reanimated";
+
+  <Animated.View
+    style={{
+      animationName: {
+          '100%': {
+            transform: [{ translateX: 100 }],
+          },
+        },
+        animationDuration: '300ms',
+        transitionProperty: 'width',
+        transitionDuration: 300,
+      },
+    }}
+  >
+    <Animated.Text style={styles.text}>Hello World</Animated.Text>
+  </Animated.View>;
+  ```
+
+## Data Fetching
+
+- **ALWAYS use `@expo/fetch` for HTTP requests**
+- Do not use built-in fetch, axios, or other HTTP libraries
+- Move all fetch calls to separate file using react-query hooks in separate folder `services/api`
+- Example:
+
+  ```tsx
+  import { fetch } from "@expo/fetch";
+
+  const response = await fetch("https://api.example.com/data");
+  const data = await response.json();
+  ```
+
+  and example of using react-query hooks:
+
+  ```tsx
+  import { useQuery } from "@tanstack/react-query";
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["data"],
+    queryFn: () => fetch("https://api.example.com/data"),
+  });
+  ```
+
+## API Routes
+
+- When API functionality is requested, create Expo API routes
+- API routes should be created as `+api.ts` files in the `app/api/` directory
+- Follow Expo Router API route conventions
+- Example structure: `app/api/users/user-info+api.ts` for `/api/users/user-info` endpoint or `app/api/users/[id]+api.ts` for `/api/users/[id]` endpoint for dynamic route
+
+## Component Patterns
+
+- Use functional components with hooks
+- Leverage existing themed components and keep in mind dark mode and light mode
+- Follow the existing component structure and naming conventions
+- Use proper TypeScript interfaces for component props
+- **Component Structure**: Components must be organized in feature folders with `index.tsx`, `styles.ts` (if needed), and `types.ts` files
+- **Component Declaration**: Use arrow function pattern with `FC<PropsWithChildren<T>>` typing
+
+## Services and API Implementation
+
+- **Keyboard Handling**: Use keyboard avoiding scroll views for screens with input fields
+
+## Styling
+
+- use nativewind for styling
+- Follow the existing theming system in [constants/Colors.ts](mdc:constants/Colors.ts) (if exists)
+- Use the existing color scheme hooks from [hooks/useColorScheme.ts](mdc:hooks/useColorScheme.ts) (if exists)
+
+## File Naming
+
+- Use PascalCase for component files (e.g., `MyComponent.tsx`)
+- Use camelCase for utility files and hooks
+- Use lowercase with hyphens for route files when needed
+- API routes use `+api.ts` suffix
+
+## State Management
+
+- **ALWAYS use Zustand for state management**
+- Create custom stores in separate files in a `stores/` directory
+- Use TypeScript interfaces for store state and actions
+- Keep stores focused and single-purpose
+- **For complex state logic**: Use class-based stores outside React tree when complex business logic requires store manipulation independent of React lifecycle
+- Example store structure:
+
+  ```tsx
+  // stores/useAuthStore.ts
+  import { create } from "zustand";
+
+  interface AuthState {
+    user: User | null;
+    isAuthenticated: boolean;
+    login: (credentials: LoginCredentials) => Promise<void>;
+    logout: () => void;
+  }
+
+  export const useAuthStore = create<AuthState>((set) => ({
+    user: null,
+    isAuthenticated: false,
+    login: async (credentials) => {
+      // Login logic
+      set({ user: userData, isAuthenticated: true });
+    },
+    logout: () => {
+      set({ user: null, isAuthenticated: false });
+    },
+  }));
+  ```
+
+- Example class-based store for complex logic:
+
+  ```tsx
+  // stores/AuthService.ts
+  class AuthService {
+    private store: any; // Zustand store reference
+
+    constructor(store: any) {
+      this.store = store;
+    }
+
+    async authenticateUser(credentials: LoginCredentials) {
+      // Complex authentication logic here
+      const userData = await api.authenticate(credentials);
+      this.store.getState().setUser(userData);
+      return userData;
+    }
+
+    logoutUser() {
+      // Complex logout logic with cleanup
+      this.store.getState().clearUser();
+      localStorage.clear();
+    }
+  }
+
+  export const authService = new AuthService(useAuthStore);
+  ```
+
+- Use stores in components with proper TypeScript typing
+- Avoid prop drilling by using Zustand stores for shared state
+- Keep local component state with useState for component-specific data
+
+## Performance Optimization
+
+- Optimize FlatLists with `removeClippedSubviews`, `maxToRenderPerBatch`, and `windowSize`
+- Avoid anonymous functions in `renderItem` or event handlers
+- Implement code splitting and lazy loading for non-critical components
+
+## Error Handling and Validation
+
+- Handle errors at the beginning of functions with early returns
+- Use if-return pattern instead of deeply nested if statements
+- Implement global error boundaries for unexpected errors
+- Use Zod for runtime validation and error handling
+- Prioritize edge case handling and user-friendly error messages
+
+## Security Best Practices
+
+- Sanitize user inputs to prevent XSS attacks
+- Use secure storage for sensitive data (expo-secure-store)
+- Ensure secure API communication with HTTPS and proper authentication
+- Follow Expo's Security guidelines: https://docs.expo.dev/guides/security/
+
+## Testing Guidelines
+
+- Write unit tests using Vitest and React Native Testing Library if required
+- Implement integration tests for critical user flows using Maestro
+
+## Safe Area Management
+
+- Use SafeAreaProvider from react-native-safe-area-context globally
+- Wrap components with SafeAreaView for proper screen insets
+- Use SafeAreaScrollView for scrollable content
+- Avoid hardcoding safe area padding/margins
+
+## Best Practices
+
+- Always handle loading and error states in components
+- Use proper TypeScript types and interfaces
+- Follow React Native performance best practices
+- Test on both iOS and Android when possible
+- Use Expo development tools and debugging features
+
+- Follow React Native performance best practices
+- Test on both iOS and Android when possible
+- Use Expo development tools and debugging features
