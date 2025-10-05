@@ -30,25 +30,17 @@ After installation, your project will have:
 
 ```
 your-project/
-├── AGENTS.md                           # Main AI coding guidelines
+├── AGENTS.md                           # Main AI coding guidelines (https://agents.md/)
 ├── .cursor/
 │   ├── rules/
 │   │   └── react-native-expo-guidelines.mdc  # Cursor-specific rules
-│   ├── commands/
-│   │   ├── build-deploy.md             # Build and deployment workflows
-│   │   ├── code-quality.md             # Code quality checks
+│   ├── commands/                       # Command templates for common workflows (https://cursor.com/docs/agent/chat/commands)
 │   │   ├── code-review-checklist.md    # Review checklist
-│   │   ├── run-tests-fix-failures.md   # Testing workflows
-│   │   ├── security-audit.md           # Security guidelines
-│   │   ├── setup-new-feature.md        # Feature setup guide
-│   │   └── update-documentation.md     # Documentation updates
+│   │   ├── ...
 │   ├── hooks.json                      # Hook configuration
-│   └── hooks/
-│       ├── format.sh                   # Auto-format edited files
+│   └── hooks/                          # Hook scripts that run automatically after certain actions (https://cursor.com/docs/agent/hooks)
 │       ├── audit.sh                    # Audit agent actions
-│       ├── block-dangerous-git.sh      # Block dangerous git ops
-│       ├── redact-secrets.sh           # Redact secrets from reads
-│       └── check-secrets.sh            # Check prompts for secrets
+│       ├── ...
 ```
 
 ## What's Inside
@@ -75,7 +67,7 @@ Comprehensive guidelines covering:
 - Expo Router (navigation)
 - Zustand (state management)
 - React Native Reanimated (animations)
-- @expo/fetch (HTTP requests)
+- expo/fetch (HTTP requests)
 - NativeWind (styling)
 
 ### Command Templates
@@ -132,4 +124,4 @@ Created for React Native Expo projects to ensure consistent, high-quality AI-ass
 ## TODO/improvements
 
 - add option to download only certain files or directories
-- add additional configs for claude code
+- add additional configs for claude code (subagents, hooks, output styles etc)
