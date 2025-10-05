@@ -34,14 +34,21 @@ your-project/
 ├── .cursor/
 │   ├── rules/
 │   │   └── react-native-expo-guidelines.mdc  # Cursor-specific rules
-│   └── commands/
-│       ├── build-deploy.md             # Build and deployment workflows
-│       ├── code-quality.md             # Code quality checks
-│       ├── code-review-checklist.md    # Review checklist
-│       ├── run-tests-fix-failures.md   # Testing workflows
-│       ├── security-audit.md           # Security guidelines
-│       ├── setup-new-feature.md        # Feature setup guide
-│       └── update-documentation.md     # Documentation updates
+│   ├── commands/
+│   │   ├── build-deploy.md             # Build and deployment workflows
+│   │   ├── code-quality.md             # Code quality checks
+│   │   ├── code-review-checklist.md    # Review checklist
+│   │   ├── run-tests-fix-failures.md   # Testing workflows
+│   │   ├── security-audit.md           # Security guidelines
+│   │   ├── setup-new-feature.md        # Feature setup guide
+│   │   └── update-documentation.md     # Documentation updates
+│   ├── hooks.json                      # Hook configuration
+│   └── hooks/
+│       ├── format.sh                   # Auto-format edited files
+│       ├── audit.sh                    # Audit agent actions
+│       ├── block-dangerous-git.sh      # Block dangerous git ops
+│       ├── redact-secrets.sh           # Redact secrets from reads
+│       └── check-secrets.sh            # Check prompts for secrets
 ```
 
 ## What's Inside
@@ -83,6 +90,18 @@ Pre-built workflows for common tasks:
 - **code-quality**: Code quality analysis
 - **update-documentation**: Documentation maintenance
 
+### Cursor Hooks
+
+AI agent lifecycle hooks for safety and quality:
+
+- **format.sh**: Auto-formats edited files with Prettier/ESLint
+- **audit.sh**: Logs all agent actions to `~/.cursor/audit/agent-audit.log`
+- **block-dangerous-git.sh**: Prevents force pushes to main/master and other risky git operations
+- **redact-secrets.sh**: Blocks reading of `.env` files and files with secret patterns
+- **check-secrets.sh**: Scans prompts for API keys, tokens, and secrets before submission
+
+Hooks run automatically and require a Cursor restart after installation. Check the Hooks tab in Cursor Settings to debug.
+
 ## Usage
 
 ### With Cursor AI
@@ -110,3 +129,8 @@ After installation, feel free to customize the rules for your specific project:
 ---
 
 Created for React Native Expo projects to ensure consistent, high-quality AI-assisted development.
+
+## TODO/improvements
+
+- add option to download only certain files or directories
+- add additional configs for claude code

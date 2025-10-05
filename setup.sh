@@ -83,6 +83,7 @@ get_github_files() {
 echo -e "${BLUE}📁 Creating directories...${NC}"
 mkdir -p .cursor/commands
 mkdir -p .cursor/rules
+mkdir -p .cursor/hooks
 
 # Download AGENTS.md
 download_file "$REPO_URL/AGENTS.md" "AGENTS.md"
@@ -112,16 +113,51 @@ else
     exit 1
 fi
 
+# Download hooks.json
+echo -e "\n${BLUE}🔗 Fetching hooks configuration...${NC}"
+download_file "$REPO_URL/.cursor/hooks.json" ".cursor/hooks.json"
+
+# Download hooks documentation
+download_file "$REPO_URL/.cursor/HOOKS.md" ".cursor/HOOKS.md"
+
+# Download .cursor/hooks scripts
+echo -e "\n${BLUE}🪝 Fetching hook scripts...${NC}"
+hooks_files=$(get_github_files ".cursor/hooks")
+if [ -n "$hooks_files" ]; then
+    while IFS= read -r file; do
+        [ -z "$file" ] && continue
+        download_file "$REPO_URL/.cursor/hooks/$file" ".cursor/hooks/$file"
+        # Make hook scripts executable
+        if [[ "$file" == *.sh ]]; then
+            chmod +x ".cursor/hooks/$file"
+            echo -e "${GREEN}  ✓ Made $file executable${NC}"
+        fi
+    done <<< "$hooks_files"
+else
+    echo -e "${YELLOW}⚠️  No hooks found or failed to fetch hooks${NC}"
+fi
+
 echo -e "\n${GREEN}✅ Setup complete!${NC}\n"
 echo -e "${GREEN}The following files have been added to your project:${NC}"
 echo -e "  ${GREEN}•${NC} AGENTS.md - Main AI coding guidelines"
 echo -e "  ${GREEN}•${NC} .cursor/rules/ - Cursor-specific AI rules"
 echo -e "  ${GREEN}•${NC} .cursor/commands/ - Helpful command templates"
+echo -e "  ${GREEN}•${NC} .cursor/hooks.json - Hook configuration"
+echo -e "  ${GREEN}•${NC} .cursor/hooks/ - AI agent lifecycle hooks"
 
 echo -e "\n${YELLOW}📝 Next steps:${NC}"
-echo -e "  1. Review AGENTS.md and customize for your project"
-echo -e "  2. Adjust .cursor/rules if needed"
-echo -e "  3. Commit these files to your repository"
-echo -e "  4. Share with your team!"
+echo -e "  1. ${RED}Restart Cursor${NC} to activate hooks"
+echo -e "  2. Review AGENTS.md and customize for your project"
+echo -e "  3. Check .cursor/HOOKS.md for hook documentation"
+echo -e "  4. Verify hooks in Cursor Settings > Hooks tab"
+echo -e "  5. Commit these files to your repository"
+echo -e "  6. Share with your team!"
 
-echo -e "\n${BLUE}💡 Tip: These rules work with Cursor AI to guide code generation${NC}"
+echo -e "\n${BLUE}🪝 Installed Hooks:${NC}"
+echo -e "  ${GREEN}•${NC} format.sh - Auto-format edited files"
+echo -e "  ${GREEN}•${NC} audit.sh - Log agent actions to ~/.cursor/audit/"
+echo -e "  ${GREEN}•${NC} block-dangerous-git.sh - Prevent force pushes to main"
+echo -e "  ${GREEN}•${NC} redact-secrets.sh - Block reading of .env files"
+echo -e "  ${GREEN}•${NC} check-secrets.sh - Scan prompts for API keys"
+
+echo -e "\n${BLUE}💡 Tip: These rules and hooks work with Cursor AI to guide and protect code generation${NC}"

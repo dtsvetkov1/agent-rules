@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "./hooks/audit.sh"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "./hooks/audit.sh"
+      }
+    ],
+    "beforeMCPExecution": [
+      {
+        "command": "./hooks/audit.sh"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "./hooks/check-secrets.sh"
+      }
+    ],
+    "stop": [
+      {
+        "command": "./hooks/audit.sh"
+      }
+    ]
+  }
+}
