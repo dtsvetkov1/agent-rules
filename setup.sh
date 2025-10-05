@@ -117,9 +117,6 @@ fi
 echo -e "\n${BLUE}🔗 Fetching hooks configuration...${NC}"
 download_file "$REPO_URL/.cursor/hooks.json" ".cursor/hooks.json"
 
-# Download hooks documentation
-download_file "$REPO_URL/.cursor/HOOKS.md" ".cursor/HOOKS.md"
-
 # Download .cursor/hooks scripts
 echo -e "\n${BLUE}🪝 Fetching hook scripts...${NC}"
 hooks_files=$(get_github_files ".cursor/hooks")
@@ -148,16 +145,8 @@ echo -e "  ${GREEN}•${NC} .cursor/hooks/ - AI agent lifecycle hooks"
 echo -e "\n${YELLOW}📝 Next steps:${NC}"
 echo -e "  1. ${RED}Restart Cursor${NC} to activate hooks"
 echo -e "  2. Review AGENTS.md and customize for your project"
-echo -e "  3. Check .cursor/HOOKS.md for hook documentation"
-echo -e "  4. Verify hooks in Cursor Settings > Hooks tab"
-echo -e "  5. Commit these files to your repository"
-echo -e "  6. Share with your team!"
-
-echo -e "\n${BLUE}🪝 Installed Hooks:${NC}"
-echo -e "  ${GREEN}•${NC} format.sh - Auto-format edited files"
-echo -e "  ${GREEN}•${NC} audit.sh - Log agent actions to ~/.cursor/audit/"
-echo -e "  ${GREEN}•${NC} block-dangerous-git.sh - Prevent force pushes to main"
-echo -e "  ${GREEN}•${NC} redact-secrets.sh - Block reading of .env files"
-echo -e "  ${GREEN}•${NC} check-secrets.sh - Scan prompts for API keys"
+echo -e "  3. Verify hooks in Cursor Settings > Hooks tab"
+echo -e "  4. Commit these files to your repository"
+echo -e "  5. Share with your team!"
 
 echo -e "\n${BLUE}💡 Tip: These rules and hooks work with Cursor AI to guide and protect code generation${NC}"
