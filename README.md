@@ -97,7 +97,6 @@ AI agent lifecycle hooks for safety and quality:
 - **format.sh**: Auto-formats edited files with Prettier/ESLint
 - **audit.sh**: Logs all agent actions to `~/.cursor/audit/agent-audit.log`
 - **block-dangerous-git.sh**: Prevents force pushes to main/master and other risky git operations
-- **redact-secrets.sh**: Blocks reading of `.env` files and files with secret patterns
 - **check-secrets.sh**: Scans prompts for API keys, tokens, and secrets before submission
 
 Hooks run automatically and require a Cursor restart after installation. Check the Hooks tab in Cursor Settings to debug.
