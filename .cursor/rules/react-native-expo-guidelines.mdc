@@ -1,6 +1,5 @@
 ---
-description: When the task it directly about components, modules or features using react native
-alwaysApply: false
+alwaysApply: true
 ---
 
 # React Native Expo Project Guidelines
@@ -16,11 +15,35 @@ This is a React Native Expo project. Follow these core principles and best pract
 - Constants are stored in [constants/](mdc:constants/) directory
 - Custom hooks are in [hooks/](mdc:hooks/) directory
 
+## Directory Structure
+
+```
+app/              # Expo Router pages & API routes
+  ├── _layout.tsx # Main entry point
+  ├── index.tsx   # Home screen
+  └── api/        # API routes (+api.ts files)
+components/       # Reusable components
+  └── ui/         # UI components
+assets/           # Assets
+constants/        # App configuration
+hooks/            # Custom React hooks
+stores/           # Zustand stores
+services/         # API services & integrations
+utils/            # Utility functions
+server/           # Server files
+scripts/          # Scripts
+```
+
 ## Core Technology Stack
 
 - **React Native with Expo**: Use latest Expo SDK features and APIs
 - **TypeScript**: All files should use TypeScript with proper typing
 - **Expo Router**: File-based routing system for navigation
+- **Bun** - Package manager
+- **Zustand** - State management in `stores/` directory
+- **React Native Reanimated** - Animations
+- **@expo/fetch** - HTTP requests
+- **NativeWind** - Styling (Tailwind CSS for React Native)
 
 ## Package Management
 
@@ -209,7 +232,7 @@ This is a React Native Expo project. Follow these core principles and best pract
 
 ## Performance Optimization
 
-- Optimize FlatLists with `removeClippedSubviews`, `maxToRenderPerBatch`, and `windowSize`
+- For large lists, use LegendList from @legendapp/list for better performance
 - Avoid anonymous functions in `renderItem` or event handlers
 - Implement code splitting and lazy loading for non-critical components
 
