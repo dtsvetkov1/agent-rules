@@ -123,5 +123,8 @@ Created for React Native Expo projects to ensure consistent, high-quality AI-ass
 
 ## TODO/improvements
 
+- dont duplicate agent md for cursor?
+- less comments, start from small letter
+- mcp servers config
 - add option to download only certain files or directories
 - add additional configs for claude code (subagents, hooks, output styles etc)
