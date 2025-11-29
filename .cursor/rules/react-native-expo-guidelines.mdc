@@ -42,8 +42,8 @@ scripts/          # Scripts
 - **Bun** - Package manager
 - **Zustand** - State management in `stores/` directory
 - **React Native Reanimated** - Animations
-- **@expo/fetch** - HTTP requests
-- **NativeWind** - Styling (Tailwind CSS for React Native)
+- **expo/fetch** - HTTP requests
+- **uniwind** - Styling (Tailwind CSS for React Native)
 
 ## Package Management
 
@@ -109,13 +109,13 @@ scripts/          # Scripts
 
 ## Data Fetching
 
-- **ALWAYS use `@expo/fetch` for HTTP requests**
+- **ALWAYS use `expo/fetch` for HTTP requests**
 - Do not use built-in fetch, axios, or other HTTP libraries
 - Move all fetch calls to separate file using react-query hooks in separate folder `services/api`
 - Example:
 
   ```tsx
-  import { fetch } from "@expo/fetch";
+  import { fetch } from "expo/fetch";
 
   const response = await fetch("https://api.example.com/data");
   const data = await response.json();
@@ -154,7 +154,7 @@ scripts/          # Scripts
 
 ## Styling
 
-- use nativewind for styling
+- use tailwind-like styling for styling (uniwind)
 - Follow the existing theming system in [constants/Colors.ts](mdc:constants/Colors.ts) (if exists)
 - Use the existing color scheme hooks from [hooks/useColorScheme.ts](mdc:hooks/useColorScheme.ts) (if exists)
 

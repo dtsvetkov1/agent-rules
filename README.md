@@ -68,7 +68,7 @@ Comprehensive guidelines covering:
 - Zustand (state management)
 - React Native Reanimated (animations)
 - expo/fetch (HTTP requests)
-- NativeWind (styling)
+- Uniwind (styling)
 
 ### Command Templates
 

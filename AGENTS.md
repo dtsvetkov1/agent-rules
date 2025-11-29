@@ -74,7 +74,7 @@ services/                    # API services and external integrations
 
 ### HTTP Client
 
-- **@expo/fetch**: Always use for HTTP requests
+- **expo/fetch**: Always use for HTTP requests
 - Never use built-in fetch, axios, or other HTTP libraries
 - Move fetch calls to separate files using React Query hooks
 
@@ -102,7 +102,7 @@ services/                    # API services and external integrations
 
 ### Styling
 
-- Use NativeWind for styling (Tailwind CSS for React Native)
+- Use tailwind-type styles for styling (uniwind CSS for React Native)
 - Follow existing theming system in `constants/Colors.ts`
 - Use color scheme hooks from `hooks/useColorScheme.ts`
 
@@ -128,7 +128,7 @@ services/                    # API services and external integrations
 
 ### Data Fetching
 
-- Always use `@expo/fetch` for HTTP requests
+- Always use `expo/fetch` for HTTP requests
 - Move fetch calls to separate files using React Query hooks in `services/api`
 - Handle loading and error states in all components
 
